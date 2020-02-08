@@ -83,6 +83,15 @@ RSpec.describe EntriesController, type: :controller do
           expect(Entry.last.posted_at).to eq(Time.current)
         end
       end
+
+      it 'should redirect to the new posts page' do
+        user = create :user
+
+        sign_in(user)
+        action.call
+
+        expect(response).to redirect_to entries_path(Entry.last)
+      end
     end
 
     def action

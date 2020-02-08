@@ -10,9 +10,9 @@ class EntriesController < ApplicationController
   end
 
   def create
-    Entry.create(created_entry_data)
+    entry = Entry.create(created_entry_data)
 
-    redirect_to root_path
+    redirect_to entries_path(entry)
   end
 
   private
