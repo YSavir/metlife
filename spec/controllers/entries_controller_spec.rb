@@ -2,25 +2,17 @@ require 'controller_helper'
 
 RSpec.describe EntriesController, type: :controller do
   describe 'GET #index' do
-    describe 'When the user is not signed in' do
-      it 'should redirect to the root path' do
-        get :index
+    it_should_behave_like 'a_user_authenticated_endpoint' do
+      let :action do
+        Proc.new { get :index }
+      end
 
-        expect(response).to redirect_to new_user_session_path
+      let :user do
+        create :user
       end
     end
 
     describe 'When the user is signed in' do
-      it 'should return a 200' do
-        user = create :user
-
-        sign_in(user)
-
-        get :index
-
-        expect(response).to have_http_status(200)
-      end
-
       it 'should assign the user entries' do
         user = create :user
         user_entries = create_list :entry, 2, user: user
@@ -31,6 +23,18 @@ RSpec.describe EntriesController, type: :controller do
         get :index
         
         expect(assigns(:user_entries)).to eq user_entries
+      end
+    end
+  end
+
+  describe 'GET #new' do
+    it_should_behave_like 'a_user_authenticated_endpoint' do
+      let :action do
+        Proc.new { get :new }
+      end
+
+      let :user do
+        create :user
       end
     end
   end

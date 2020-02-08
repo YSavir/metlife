@@ -4,4 +4,7 @@ class EntriesController < ApplicationController
   def index
     @user_entries = current_user.entries
   end
+
+  def new
+  end
 end
