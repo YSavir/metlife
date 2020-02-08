@@ -3,12 +3,8 @@ require 'controller_helper'
 RSpec.describe EntriesController, type: :controller do
   describe 'GET #index' do
     it_should_behave_like 'a_user_authenticated_endpoint' do
-      let :action do
+      def action 
         Proc.new { get :index }
-      end
-
-      let :user do
-        create :user
       end
     end
 
@@ -29,12 +25,8 @@ RSpec.describe EntriesController, type: :controller do
 
   describe 'GET #new' do
     it_should_behave_like 'a_user_authenticated_endpoint' do
-      let :action do
+      def action
         Proc.new { get :new }
-      end
-
-      let :user do
-        create :user
       end
     end
   end

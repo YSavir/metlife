@@ -16,4 +16,8 @@ RSpec.shared_examples "a_user_authenticated_endpoint" do
       expect(response).to have_http_status(200)
     end
   end
+
+  def user
+    @user ||= create :user, email: 'testing@place.com'
+  end
 end
