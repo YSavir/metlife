@@ -41,4 +41,61 @@ RSpec.describe EntriesController, type: :controller do
       end
     end
   end
+
+  describe 'POST #create' do
+    it_should_behave_like 'a_user_authenticated_endpoint' do
+      def success_status
+        302
+      end
+    end
+
+    describe 'When the user is signed in' do
+      it 'should create a new post with the given title and body' do
+        user = create :user
+
+        expect {
+          sign_in(user)
+          action.call
+        }.to change { Entry.count } .by(1)
+
+        expect(Entry.last).to have_attributes(
+          title: new_entry_details['title'],
+          body: new_entry_details['body']
+        )
+      end
+
+      it 'should set the created post to the current user' do
+        user = create :user
+
+        sign_in(user)
+        action.call
+
+        expect(Entry.last.user).to eq(user)
+      end
+
+      it 'should set the posted_at to the current time' do
+        Timecop.freeze do
+          user = create :user
+
+          sign_in(user)
+          action.call
+
+          expect(Entry.last.posted_at).to eq(Time.current)
+        end
+      end
+    end
+
+    def action
+      Proc.new do
+        post :create, params: {
+          title: new_entry_details['title'],
+          body: new_entry_details['body']
+        }
+      end
+    end
+
+    def new_entry_details
+      @new_entry_details ||= build(:entry).attributes
+    end
+  end
 end

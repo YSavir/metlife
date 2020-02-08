@@ -13,11 +13,15 @@ RSpec.shared_examples "a_user_authenticated_endpoint" do
 
       action.call
 
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status(success_status)
     end
   end
 
   def user
     @user ||= create :user, email: 'testing@place.com'
+  end
+
+  def success_status
+    200
   end
 end

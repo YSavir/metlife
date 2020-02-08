@@ -4,5 +4,5 @@ Rails.application.routes.draw do
   
   root to: 'entries#index'
 
-  resources :entries, only: [:index, :new]
+  resources :entries, only: [:index, :new, :create]
 end
