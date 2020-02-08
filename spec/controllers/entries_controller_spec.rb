@@ -29,5 +29,16 @@ RSpec.describe EntriesController, type: :controller do
         Proc.new { get :new }
       end
     end
+
+    describe 'When the user is signed in' do
+      it 'should assign a blank entry' do
+        user = create :user
+
+        sign_in(user)
+        get :new
+
+        expect(assigns(:entry).attributes).to eq Entry.new.attributes
+      end
+    end
   end
 end
